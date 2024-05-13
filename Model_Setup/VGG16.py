@@ -53,17 +53,21 @@ validation_datagen = ImageDataGenerator(rescale=1./255)
 
 # Flow training images in batches using train_datagen generator
 train_generator = train_datagen.flow_from_directory(
-        '/home/liam/git/Ai_Fungi_Finder/Data/Training',  # This is the source directory for training images
+        '/home/liam/git/Ai_Fungi_Finder/Data_V3/Training',  # This is the source directory for training images
         target_size=(224, 224),  # All images will be resized to 224x224
         batch_size=20,
-        class_mode='categorical')  # Since we use categorical_crossentropy loss, we need categorical labels
+        class_mode='categorical',  # Since we use categorical_crossentropy loss, we need categorical labels
+        color_mode = 'rgb'
+) 
 
 # Flow validation images in batches using validation_datagen generator
 validation_generator = validation_datagen.flow_from_directory(
-        '/home/liam/git/Ai_Fungi_Finder/Data/Testing',
+        '/home/liam/git/Ai_Fungi_Finder/Data_V3/Testing',
         target_size=(224, 224),
         batch_size=20,
-        class_mode='categorical')
+        class_mode='categorical',
+        color_mode = 'rgb'
+) 
 
 
 
@@ -93,7 +97,7 @@ last_output = last_layer.output
 x = layers.Flatten()(last_output)
 x = layers.Dense(512, activation='relu')(x)
 x = layers.Dropout(0.5)(x)
-x = layers.Dense(15, activation='softmax')(x)  # Change to 10 for the number of mushroom species
+x = layers.Dense(9, activation='softmax')(x)  # Change to 10 for the number of mushroom species
 
 # Create the new model
 vggmodel = tf.keras.models.Model(inputs=pre_trained_model.input, outputs=x)
@@ -116,7 +120,7 @@ vgghist = vggmodel.fit(
     epochs=20,
     validation_data=validation_generator  # use validation_generator here
 )
-vggmodel.save("/home/liam/git/Ai_Fungi_Finder/Models/vggmodel.keras")
+vggmodel.save("/home/liam/git/Ai_Fungi_Finder/Models/vggmodelV3.keras")
 
 
 plot_model_history(vgghist)
