@@ -12,7 +12,7 @@ data_transforms = transforms.Compose([
     transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
 ])
 
-dataset_root = '/home/dan/git/Ai_Fungi_Finder/Data'
+dataset_root = '/home/liam/git/Ai_Fungi_Finder/Data'
 
 # Load the dataset
 train_dataset = datasets.ImageFolder(root=dataset_root, transform=data_transforms)
@@ -53,6 +53,7 @@ for epoch in range(num_epochs):
         loss = criterion(outputs, labels.to(device))  # Move labels to device
         loss.backward()
         optimizer.step()
+        print("train")
     
     # Step the scheduler
     scheduler.step()
@@ -72,7 +73,7 @@ for epoch in range(num_epochs):
 
 
 # Save the trained model
-torch.save(vgg_model.state_dict(), 'vgg_model.pth')
+torch.save(vgg_model.state_dict(), 'vgg_model_dan.pth')
 
 # Test the final model on the test set if available
 # Evaluate the model using a similar procedure as validation

@@ -14,12 +14,12 @@ data_transforms = transforms.Compose([
     transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
 ])
 
-dataset_root = '/home/liam/git/Ai_Fungi_Finder/Data'
-test_dataset_root = '/home/liam/git/Ai_Fungi_Finder/Data'
+dataset_root = '/home/liam/git/Ai_Fungi_Finder/Data/Training'
+test_dataset_root = '/home/liam/git/Ai_Fungi_Finder/Data/Testing'
 
 # Load the dataset
 train_dataset = datasets.ImageFolder(root=dataset_root, transform=data_transforms)
-val_dataset = datasets.ImageFolder(root=dataset_root, transform=data_transforms)
+val_dataset = datasets.ImageFolder(root=test_dataset_root, transform=data_transforms)
 
 # Create data loaders
 train_loader = torch.utils.data.DataLoader(train_dataset, batch_size=32, shuffle=True)
@@ -69,6 +69,7 @@ for epoch in range(num_epochs):
         loss = criterion(outputs, labels)
         loss.backward()
         optimizer.step()
+        print("train")
 
     # Validation
     vgg_model.eval()
@@ -85,3 +86,4 @@ for epoch in range(num_epochs):
  
 # Test the final model on the test set if available
 # Evaluate the model using a similar procedure as validation
+torch.save(vgg_model.state_dict(), 'vgg_model.pth')
